@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon",
-		"build": "rimraf build && tsc"
+		"build:ci": "rimraf build && tsc"
 	},
 	"devDependencies": {
 		"@adminjs/express": "^6.1.0",
