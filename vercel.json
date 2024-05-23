@@ -1,9 +1,9 @@
 {
 	"version": 2,
+	"buildCommand": "npm run build",
+	"outputDirectory": "build",
 	"builds": [
 		{
-			"buildCommand": "npm run build",
-			"outputDirectory": "build",
 			"src": "build/index.js",
 			"use": "@vercel/node",
 			"config": { "includeFiles": ["build/**"] }
