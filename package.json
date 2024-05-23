@@ -9,8 +9,7 @@
 		"build": "rimraf build && tsc",
 		"ts.check": "tsc --project tsconfig.json",
 		"add-build": "git add build",
-		"test": "echo \"Error: no test specified\" && exit 1",
-		"postinstall": "node postinstall.js"
+		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"devDependencies": {
 		"@adminjs/express": "^6.1.0",
@@ -26,7 +25,6 @@
 		"typescript": "^5.4.5"
 	},
 	"dependencies": {
-		"@rollup/rollup-linux-x64-gnu": "^4.18.0",
 		"adminjs": "^7.8.1",
 		"dotenv": "^16.4.5",
 		"express": "^4.19.2",
@@ -39,7 +37,7 @@
 		"build",
 		"add-build"
 	],
-	"engines": {
-		"node": "18.x"
+	"resolutions": {
+		"rollup": "npm:@rollup/wasm-node"
 	}
 }
