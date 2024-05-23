@@ -1,11 +1,11 @@
 {
 	"name": "adminjs-example",
 	"version": "1.0.0",
-	"main": "src/index.ts",
+	"main": "build/index.js",
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon",
-		"start": "nodemon build/index.ts",
+		"start": "nodemon build/index.js",
 		"build": "rimraf build && tsc",
 		"ts.check": "tsc --project tsconfig.json",
 		"add-build": "git add build",
