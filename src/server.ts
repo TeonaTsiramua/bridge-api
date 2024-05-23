@@ -1,13 +1,11 @@
 import AdminJSExpress from '@adminjs/express';
 import { Database, Resource } from '@adminjs/mongoose';
-import AdminJS, { AdminJSOptions } from 'adminjs';
-import bodyParser from 'body-parser';
+import AdminJS from 'adminjs';
 import dotenv from 'dotenv';
 import express from 'express';
 import { connect } from 'mongoose';
-import { Company } from './company/company.entity.js';
-import { companyRouter } from './company/company.router.js';
-import { Product } from './product/product.entity.js';
+import { options } from './options.js';
+import { productRouter } from './product/product.router.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -31,12 +29,9 @@ AdminJS.registerAdapter({
 
 export const start = async () => {
   const app = express();
-  await connect(process.env.DATABASE_URL!);
+  await connect(process.env.DATABASE_URL as string);
 
-  const adminOptions: AdminJSOptions = {
-    resources: [Company, Product],
-  };
-  const admin = new AdminJS(adminOptions);
+  const admin = new AdminJS(options);
 
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
@@ -53,8 +48,8 @@ export const start = async () => {
       name: 'adminjs',
     }
   );
-  app.use('/test-endpoint', bodyParser.json(), companyRouter);
-  app.use(express.static('../Bridge/dist'));
+  app.use(express.json());
+  productRouter(app);
   app.use(admin.options.rootPath, adminRouter);
 
   app.listen(PORT, () => {
