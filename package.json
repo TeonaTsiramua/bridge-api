@@ -1,12 +1,12 @@
 {
   "name": "adminjs-example",
   "version": "1.0.0",
-  "main": "build/index.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "nodemon",
-    "start": ""
+    "vercel-build": "echo hello"
   },
   "devDependencies": {
     "@adminjs/express": "^6.1.0",
