@@ -5,7 +5,11 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon",
-		"build": "rimraf build && tsc"
+		"start": "nodemon src/index.ts",
+		"build": "rimraf build && tsc",
+		"ts.check": "tsc --project tsconfig.json",
+		"add-build": "git add build",
+		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"devDependencies": {
 		"@adminjs/express": "^6.1.0",
@@ -25,5 +29,10 @@
 		"mongodb": "^6.6.2",
 		"mongoose": "^8.4.0",
 		"uuid": "^9.0.1"
-	}
+	},
+	"pre-commit": [
+		"ts.check",
+		"build",
+		"add-build"
+	]
 }
