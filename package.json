@@ -9,13 +9,15 @@
 		"build": "rimraf build && tsc",
 		"ts.check": "tsc --project tsconfig.json",
 		"add-build": "git add build",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"postinstall": "node postinstall.js"
 	},
 	"devDependencies": {
 		"@adminjs/express": "^6.1.0",
 		"@adminjs/mongoose": "^4.1.0",
 		"@types/express": "^4.17.21",
 		"@types/mongoose": "^5.11.97",
+		"@types/node": "^20.12.12",
 		"@types/uuid": "^9.0.8",
 		"nodemon": "^3.1.0",
 		"pre-commit": "^1.2.2",

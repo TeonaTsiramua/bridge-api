@@ -8,6 +8,7 @@
     "rootDir": "./src",
     "outDir": "./build",
     "strict": true,
+    "types": ["node"]
   },
   "exclude": [ "node_modules" ],
   "include": [
