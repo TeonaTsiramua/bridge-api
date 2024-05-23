@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "nodemon",
-		"vercel build": "rimraf build && tsc"
+		"build": "rimraf build && tsc"
 	},
 	"devDependencies": {
 		"@adminjs/express": "^6.1.0",
