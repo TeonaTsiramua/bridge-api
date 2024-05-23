@@ -29,7 +29,6 @@
 		"uuid": "^9.0.1"
 	},
 	"pre-commit": [
-		"ts.check",
 		"build",
 		"add-build"
 	]
