@@ -5,6 +5,7 @@ import { connect } from 'mongoose';
 import admin from '../src/index.js';
 import { productRouter } from '../src/product/product.router.js';
 import cors from 'cors';
+import { DefaultAuthProvider } from 'adminjs';
 
 dotenv.config();
 
@@ -15,7 +16,7 @@ const DEFAULT_ADMIN = {
   password: 'password',
 };
 
-const authenticate = async (email, password) => {
+const authenticate = async ({ email, password }, ctx) => {
   if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
     return Promise.resolve(DEFAULT_ADMIN);
   }
@@ -27,7 +28,7 @@ const createServer = async () => {
   try {
     await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
   } catch (error) {
-    console.log(error); 
+    console.log(error);
   }
 
   app.use(express.json());
@@ -39,12 +40,17 @@ const createServer = async () => {
 
   app.use(cors(corsOptions));
 
+  const authProvider = new DefaultAuthProvider({
+    componentLoader: null,
+    authenticate,
+  });
+
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
     {
-      authenticate,
       cookieName: 'admin-cookie',
       cookiePassword: 'sessionsecret',
+      provider: authProvider
     },
     null,
     {
