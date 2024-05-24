@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { connect } from 'mongoose';
 import admin from '../src/index.js';
+import session from "express-session";
 import { productRouter } from '../src/product/product.router.js';
+import MongoStore from "connect-mongo"
 
 dotenv.config();
 
@@ -29,13 +31,24 @@ const createServer = async () => {
     admin,
     {
       authenticate,
-      cookieName: 'adminjs',
       cookiePassword: 'sessionsecret',
     }
   );
 
   app.use(express.json());
   app.use(express.static("./public"));
+
+  app.use(session({
+    secret: 'bridgesalt',
+    resave: false,
+    saveUninitialized: true,
+    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI || process.env.DATABASE_URL }),
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 1000 * 60 * 60 * 24 // 1 day
+    }
+  }));
+
   productRouter(app);
   app.use(admin.options.rootPath, adminRouter);
 
