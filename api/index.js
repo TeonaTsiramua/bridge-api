@@ -17,9 +17,12 @@ const DEFAULT_ADMIN = {
 };
 
 const authenticate = async ({ email, password }, ctx) => {
+  console.log(`Attempting to authenticate user: ${email}`);
   if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
+    console.log('Authentication successful');
     return Promise.resolve(DEFAULT_ADMIN);
   }
+  console.log('Authentication failed');
   return null;
 };
 
@@ -27,8 +30,9 @@ const createServer = async () => {
   const app = express();
   try {
     await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
+    console.log('Connected to MongoDB');
   } catch (error) {
-    console.log(error);
+    console.log('MongoDB connection error:', error);
   }
 
   app.use(express.json());
@@ -67,6 +71,27 @@ const createServer = async () => {
       },
     }
   );
+
+  // Middleware to log requests and responses
+  app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    const originalSend = res.send;
+    res.send = function (body) {
+      console.log(`Response status: ${res.statusCode}`);
+      originalSend.call(this, body);
+    };
+    next();
+  });
+
+  // Additional middleware to capture redirects
+  app.use((req, res, next) => {
+    res.on('finish', () => {
+      if (res.statusCode === 307) {
+        console.log(`Redirect detected: ${req.method} ${req.url} to ${res.get('Location')}`);
+      }
+    });
+    next();
+  });
 
   app.use(express.static("./public"));
 
