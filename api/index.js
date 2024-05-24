@@ -4,9 +4,7 @@ import express from 'express';
 import { connect } from 'mongoose';
 import admin from '../src/index.js';
 import { productRouter } from '../src/product/product.router.js';
-
-const ADMIN_COOKIE_NAME = 'admin_token';
-const ADMIN_COOKIE_VALUE = 'your_secure_token';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -33,6 +31,13 @@ const createServer = async () => {
   }
 
   app.use(express.json());
+
+  const corsOptions = {
+    origin: true, // Allows all origins
+    credentials: true,
+  };
+
+  app.use(cors(corsOptions));
 
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
