@@ -32,6 +32,8 @@ const createServer = async () => {
     console.log(error); 
   }
 
+  app.use(express.json());
+
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
     {
@@ -52,27 +54,6 @@ const createServer = async () => {
     }
   );
 
-  app.use(express.json());
-
-  app.use(admin.options.rootPath, (req, res, next) => {
-    if (req.method === 'POST' && req.path === '/login') {
-      const { email, password } = req.body;
-      authenticate(email, password).then(user => {
-        if (user) {
-          res.cookie(ADMIN_COOKIE_NAME, ADMIN_COOKIE_VALUE, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
-          });
-        }
-        next();
-      });
-    } else {
-      next();
-    }
-  });
-
   app.use(express.static("./public"));
 
   productRouter(app);
@@ -91,7 +72,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 // Export for Vercel serverless function
-export default async (req, res) => {
+export default async (req, res, next) => {
   const app = await createServer();
-  app(req, res);
+  app(req, res, next);
 };
