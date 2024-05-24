@@ -83,5 +83,6 @@ if (process.env.NODE_ENV === 'development') {
 // Export for Vercel serverless function
 export default async (req, res, next) => {
   const app = await createServer();
+  console.log(`Runnint in ${process.env.NODE_ENV} mode`)
   app(req, res, next);
 };
