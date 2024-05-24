@@ -22,7 +22,7 @@ const authenticate = async (email, password) => {
 
 const start = async () => {
   const app = express();
-  await connect(process.env.DATABASE_URL);
+  await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
 
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
