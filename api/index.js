@@ -31,13 +31,6 @@ const createServer = async () => {
       authenticate,
       cookieName: 'adminjs',
       cookiePassword: 'sessionsecret',
-    },
-    null,
-    {
-      resave: true,
-      saveUninitialized: true,
-      secret: 'sessionsecret',
-      name: 'adminjs',
     }
   );
 
