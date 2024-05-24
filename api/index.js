@@ -55,4 +55,6 @@ const start = async () => {
   });
 };
 
+process.env.NODE_ENV === "development" && start();
+
 export default start;
