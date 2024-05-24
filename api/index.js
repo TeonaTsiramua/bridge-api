@@ -20,41 +20,41 @@ const authenticate = async (email, password) => {
   return null;
 };
 
-const start = async () => {
-  const app = express();
-  await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
+// const start = async () => {
+const app = express();
+// await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
 
-  const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-    admin,
-    {
-      authenticate,
-      cookieName: 'adminjs',
-      cookiePassword: 'sessionsecret',
-    },
-    null,
-    {
-      resave: true,
-      saveUninitialized: true,
-      secret: 'sessionsecret',
-      name: 'adminjs',
-    }
-  );
-  
-  app.use(express.json());
+const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+  admin,
+  {
+    authenticate,
+    cookieName: 'adminjs',
+    cookiePassword: 'sessionsecret',
+  },
+  null,
+  {
+    resave: true,
+    saveUninitialized: true,
+    secret: 'sessionsecret',
+    name: 'adminjs',
+  }
+);
 
-  app.use(express.static("./public"));
+app.use(express.json());
 
-  productRouter(app);
-  
-  app.use(admin.options.rootPath, adminRouter);
+app.use(express.static("./public"));
 
-  app.listen(PORT, () => {
-    console.log(
-      `AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`
-    );
-  });
-};
+productRouter(app);
 
-process.env.NODE_ENV === "development" && start();
+app.use(admin.options.rootPath, adminRouter);
 
-export default start;
+// app.listen(PORT, () => {
+//   console.log(
+//     `AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`
+//   );
+// });
+// };
+
+// process.env.NODE_ENV === "development" && start();
+
+export default app;
