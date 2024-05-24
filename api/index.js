@@ -46,7 +46,7 @@ const start = async () => {
 
   productRouter(app);
 
-  app.use(admin.options.rootPath, adminRouter);
+  return app.use(admin.options.rootPath, adminRouter);
 
   // app.listen(PORT, () => {
   //   console.log(
