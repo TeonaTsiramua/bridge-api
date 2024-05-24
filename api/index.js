@@ -20,7 +20,7 @@ const authenticate = async (email, password) => {
   return null;
 };
 
-export const start = async () => {
+const start = async () => {
   const app = express();
   await connect(process.env.DATABASE_URL);
 
@@ -55,4 +55,4 @@ export const start = async () => {
   });
 };
 
-start();
+export default start;
