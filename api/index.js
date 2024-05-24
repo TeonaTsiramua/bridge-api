@@ -3,9 +3,10 @@ import dotenv from 'dotenv';
 import express from 'express';
 import { connect } from 'mongoose';
 import admin from '../src/index.js';
-import session from "express-session";
 import { productRouter } from '../src/product/product.router.js';
-import MongoStore from "connect-mongo";
+
+const ADMIN_COOKIE_NAME = 'admin_token';
+const ADMIN_COOKIE_VALUE = 'your_secure_token';
 
 dotenv.config();
 
@@ -40,18 +41,38 @@ const createServer = async () => {
     },
     null,
     {
-      resave: true,
+      resave: false,
       saveUninitialized: true,
       cookie: {
-        secure: false,
+        secure: process.env.NODE_ENV === 'production',
         httpOnly: true,
-        sameSite: true,
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000, // 1 day
       },
     }
   );
 
   app.use(express.json());
+
+  app.use(admin.options.rootPath, (req, res, next) => {
+    if (req.method === 'POST' && req.path === '/login') {
+      const { email, password } = req.body;
+      authenticate(email, password).then(user => {
+        if (user) {
+          res.cookie(ADMIN_COOKIE_NAME, ADMIN_COOKIE_VALUE, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 24 * 60 * 60 * 1000, // 1 day
+          });
+        }
+        next();
+      });
+    } else {
+      next();
+    }
+  });
+
   app.use(express.static("./public"));
 
   productRouter(app);
