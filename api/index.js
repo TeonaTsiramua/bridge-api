@@ -56,7 +56,7 @@ const createServer = async () => {
       resave: false,
       saveUninitialized: true,
       cookie: {
-        secure: "auto",
+        secure: true,
         httpOnly: true,
         sameSite: 'none'
       },
