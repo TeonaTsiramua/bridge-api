@@ -20,6 +20,8 @@ const authenticate = async (email, password) => {
   return null;
 };
 
+let dbReady = false;
+
 const connectToDatabase = async (uri) => {
   if (dbReady) {
     return;
