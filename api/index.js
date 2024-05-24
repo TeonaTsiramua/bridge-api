@@ -40,11 +40,14 @@ const createServer = async () => {
 
   app.use(cors(corsOptions));
 
+  app.set("trust proxy", true);
+
   const authProvider = new DefaultAuthProvider({
     componentLoader: null,
     authenticate,
   });
 
+  const oneDay = 1000 * 60 * 60 * 24;
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
     {
@@ -56,9 +59,11 @@ const createServer = async () => {
       resave: false,
       saveUninitialized: true,
       cookie: {
-        secure: true,
+        secure: process.env.NODE_ENV === "production",
         httpOnly: true,
-        sameSite: 'none'
+        sameSite: process.env.NODE_ENV === "production",
+        maxAge: oneDay,
+        domain: process.env.NODE_ENV === "production" ? '.bridgetrade.ge' : undefined
       },
     }
   );
@@ -83,6 +88,6 @@ if (process.env.NODE_ENV === 'development') {
 // Export for Vercel serverless function
 export default async (req, res, next) => {
   const app = await createServer();
-  console.log(`Runnint in ${process.env.NODE_ENV} mode`)
+  console.log(`Running in ${process.env.NODE_ENV} mode`);
   app(req, res, next);
 };
