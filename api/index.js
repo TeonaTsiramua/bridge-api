@@ -17,7 +17,6 @@ const DEFAULT_ADMIN = {
 };
 
 const authenticate = async ({ email, password }, ctx) => {
-  console.log(ctx);
   if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
     return Promise.resolve(DEFAULT_ADMIN);
   }
@@ -49,7 +48,6 @@ const createServer = async () => {
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
     {
-      cookieName: 'admin-cookie',
       cookiePassword: 'sessionsecret',
       provider: authProvider
     },
@@ -60,8 +58,7 @@ const createServer = async () => {
       cookie: {
         secure: false,
         httpOnly: true,
-        sameSite: 'lax',
-        maxAge: 24 * 60 * 60 * 1000, // 1 day
+        sameSite: 'none'
       },
     }
   );
