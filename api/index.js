@@ -5,7 +5,7 @@ import { connect } from 'mongoose';
 import admin from '../src/index.js';
 import session from "express-session";
 import { productRouter } from '../src/product/product.router.js';
-import MongoStore from "connect-mongo"
+import MongoStore from "connect-mongo";
 
 dotenv.config();
 
@@ -25,30 +25,34 @@ const authenticate = async (email, password) => {
 
 const createServer = async () => {
   const app = express();
-  await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
+  try {
+    await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
+  } catch (error) {
+    console.log(error); 
+  }
 
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
     {
       authenticate,
+      cookieName: 'admin-cookie',
       cookiePassword: 'sessionsecret',
+    },
+    null,
+    {
+      resave: true,
+      saveUninitialized: true,
+      cookie: {
+        secure: false,
+        httpOnly: true,
+        sameSite: true,
+        maxAge: 24 * 60 * 60 * 1000, // 1 day
+      },
     }
   );
 
   app.use(express.json());
   app.use(express.static("./public"));
-
-  app.use(session({
-    secret: 'bridgesalt',
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI || process.env.DATABASE_URL }),
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-      sameSite: 'none'
-    }
-  }));
 
   productRouter(app);
   app.use(admin.options.rootPath, adminRouter);
