@@ -4,6 +4,7 @@ import express from 'express';
 import { connect } from 'mongoose';
 import admin from '../src/index.js';
 import { productRouter } from '../src/product/product.router.js';
+
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -20,60 +21,45 @@ const authenticate = async (email, password) => {
   return null;
 };
 
-let dbReady = false;
+const createServer = async () => {
+  const app = express();
+  await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
 
-const connectToDatabase = async (uri) => {
-  if (dbReady) {
-    return;
-  }
+  const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
+    admin,
+    {
+      authenticate,
+      cookieName: 'adminjs',
+      cookiePassword: 'sessionsecret',
+    },
+    null,
+    {
+      resave: true,
+      saveUninitialized: true,
+      secret: 'sessionsecret',
+      name: 'adminjs',
+    }
+  );
 
-  try {
-    await mongoose.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+  app.use(express.json());
+  app.use(express.static("./public"));
+  productRouter(app);
+  app.use(admin.options.rootPath, adminRouter);
+
+  return app;
+};
+
+// For local development
+if (process.env.NODE_ENV === 'development') {
+  createServer().then(app => {
+    app.listen(PORT, () => {
+      console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`);
     });
-    dbReady = true;
-  } catch (error) {
-    console.error('Error connecting to database:', error);
-  }
+  });
+}
+
+// Export for Vercel serverless function
+export default async (req, res) => {
+  const app = await createServer();
+  app(req, res);
 };
-
-const app = express();
-// await connect(process.env.MONGODB_URI || process.env.DATABASE_URL);
-
-const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
-  admin,
-  {
-    authenticate,
-    cookieName: 'adminjs',
-    cookiePassword: 'sessionsecret',
-  },
-  null,
-  {
-    resave: true,
-    saveUninitialized: true,
-    secret: 'sessionsecret',
-    name: 'adminjs',
-  }
-);
-
-const ensureDbConnection = async (req, res, next) => {
-  if (!dbReady) {
-    await connectToDatabase(process.env.MONGODB_URI || process.env.DATABASE_URL);
-  }
-  next();
-};
-
-app.use(express.json());
-
-app.use(express.static("./public"));
-
-app.use(ensureDbConnection);
-
-productRouter(app);
-
-app.use(admin.options.rootPath, adminRouter);
-
-// process.env.NODE_ENV === "development" && start();
-
-export default app;
