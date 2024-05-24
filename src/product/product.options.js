@@ -1,7 +1,6 @@
-import { AdminResource } from "../types.js";
 import { Product } from "./product.entity.js";
 
-const ProductResource: AdminResource = {
+const ProductResource = {
     resource: Product,
     options: {
         navigation: {

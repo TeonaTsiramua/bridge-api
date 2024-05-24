@@ -1,11 +1,9 @@
 import AdminJSExpress from '@adminjs/express';
-import { Database, Resource } from '@adminjs/mongoose';
-import AdminJS from 'adminjs';
 import dotenv from 'dotenv';
 import express from 'express';
 import { connect } from 'mongoose';
-import { options } from './options.js';
-import { productRouter } from './product/product.router.js';
+import admin from '../src/index.js';
+import { productRouter } from '../src/product/product.router.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -15,23 +13,16 @@ const DEFAULT_ADMIN = {
   password: 'password',
 };
 
-const authenticate = async (email: string, password: string) => {
+const authenticate = async (email, password) => {
   if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
     return Promise.resolve(DEFAULT_ADMIN);
   }
   return null;
 };
 
-AdminJS.registerAdapter({
-  Resource: Resource,
-  Database: Database,
-});
-
 export const start = async () => {
   const app = express();
-  await connect(process.env.DATABASE_URL as string);
-
-  const admin = new AdminJS(options);
+  await connect(process.env.DATABASE_URL);
 
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
@@ -48,8 +39,13 @@ export const start = async () => {
       name: 'adminjs',
     }
   );
+  
   app.use(express.json());
+
+  app.use(express.static("./public"));
+
   productRouter(app);
+  
   app.use(admin.options.rootPath, adminRouter);
 
   app.listen(PORT, () => {
@@ -58,3 +54,5 @@ export const start = async () => {
     );
   });
 };
+
+start();

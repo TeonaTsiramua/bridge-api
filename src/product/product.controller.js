@@ -1,8 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { Product, productSchema } from "./product.entity.js";
 import { Types } from "mongoose";
+import { Product } from "./product.entity.js";
 
-const list = async (req: Request, res: Response) => {
+const list = async (req, res) => {
     try {
         const items = await Product.find({ ...req.query });
         if (items) {
@@ -14,7 +13,7 @@ const list = async (req: Request, res: Response) => {
     }
 };
 
-const read = async (req: Request, res: Response) => {
+const read = async (req, res) => {
     try {
         if (!Types.ObjectId.isValid(req.params._id)) {
             return res.status(400).json({ status: 400, message: 'Invalid ID format' });
