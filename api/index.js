@@ -1,11 +1,13 @@
 import AdminJSExpress from '@adminjs/express';
+import { DefaultAuthProvider } from 'adminjs';
+import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 import { connect } from 'mongoose';
 import admin from '../src/index.js';
 import { productRouter } from '../src/product/product.router.js';
-import cors from 'cors';
-import { DefaultAuthProvider } from 'adminjs';
 
 dotenv.config();
 
@@ -51,47 +53,32 @@ const createServer = async () => {
     authenticate,
   });
 
-  const oneDay = 1000 * 60 * 60 * 24;
+
+  const sessionStore = MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI || process.env.DATABASE_URL,
+    collectionName: 'sessions',
+  });
+
   const adminRouter = AdminJSExpress.buildAuthenticatedRouter(
     admin,
     {
+      provider: authProvider,
+      cookieName: 'adminjs',
       cookiePassword: 'sessionsecret',
-      provider: authProvider
     },
     null,
     {
-      resave: false,
+      store: sessionStore,
+      resave: true,
       saveUninitialized: true,
+      secret: 'sessionsecret',
       cookie: {
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: true,
-        sameSite: process.env.NODE_ENV === "production",
-        maxAge: oneDay,
-        domain: process.env.NODE_ENV === "production" ? '.bridgetrade.ge' : undefined
+        httpOnly: process.env.NODE_ENV === 'production',
+        secure: process.env.NODE_ENV === 'production',
       },
+      name: 'adminjs',
     }
   );
-
-  // Middleware to log requests and responses
-  app.use((req, res, next) => {
-    console.log(`${req.method} ${req.url}`);
-    const originalSend = res.send;
-    res.send = function (body) {
-      console.log(`Response status: ${res.statusCode}`);
-      originalSend.call(this, body);
-    };
-    next();
-  });
-
-  // Additional middleware to capture redirects
-  app.use((req, res, next) => {
-    res.on('finish', () => {
-      if (res.statusCode === 307) {
-        console.log(`Redirect detected: ${req.method} ${req.url} to ${res.get('Location')}`);
-      }
-    });
-    next();
-  });
 
   app.use(express.static("./public"));
 
