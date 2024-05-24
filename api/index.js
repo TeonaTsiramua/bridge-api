@@ -41,11 +41,12 @@ const createServer = async () => {
   app.use(session({
     secret: 'bridgesalt',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI || process.env.DATABASE_URL }),
     cookie: {
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 1000 * 60 * 60 * 24 // 1 day
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      sameSite: 'lax'
     }
   }));
 
