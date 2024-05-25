@@ -5,10 +5,7 @@ const options = {
     resources: [
         CompanyResource,
         ProductResource
-    ],
-    branding: {
-        companyName: "Bridge"
-    }
+    ]
 }
 
 export { options };

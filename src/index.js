@@ -16,6 +16,7 @@ AdminJS.registerAdapter({
 
 const admin = new AdminJS({
     ...options, assetsCDN: staticsURL, branding: {
+        companyName: "Bridge",
         favicon: `${staticsURL}/logo.svg`
     }
 });
