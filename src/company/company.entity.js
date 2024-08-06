@@ -1,6 +1,8 @@
 import { Schema, model } from 'mongoose';
 import { productSchema } from '../product/product.entity.js';
 
+//company
+
 const CompanySchema = new Schema({
   title: { type: 'String', required: true },
   slogan: { type: 'String', required: true },
