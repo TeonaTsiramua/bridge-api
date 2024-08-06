@@ -28,20 +28,20 @@ const productSchema = new Schema({
   price: { type: Number, required: true, min: 0 },
   fuel_type: { type: String, required: true, enum: fuel },
   displacement: { type: Number, required: true, min: 0.1, max: 40 },
-  engine_output: { type: Number, required: true, min: 0 },
-  cylinders: { type: Number, required: true, min: 1, max: 16 },
-  transmission: { type: String, required: true, enum: gearbox },
-  wheel_diameter: { type: Number, required: true, min: 10, max: 30 },
-  gross: { type: Number, required: true, min: 500 },
-  load_capacity: { type: Number, required: true, min: 0 },
+  engine_output: { type: Number, min: 0 },
+  cylinders: { type: Number, min: 1, max: 16 },
+  transmission: { type: String, enum: gearbox },
+  wheel_diameter: { type: Number, min: 10, max: 30 },
+  gross: { type: Number, min: 500 },
+  load_capacity: { type: Number, min: 0 },
   emission_class: {
     type: String,
-    required: true,
+
     enum: ['Euro1', 'Euro2', 'Euro3', 'Euro4', 'Euro5', 'Euro6'],
   },
   axle_configuration: {
     type: String,
-    required: true,
+
     enum: ['4X2', '4X4', '6X4', '6X6', '8X4', '8X6', '8X8', 'სხვა'],
   },
 });
