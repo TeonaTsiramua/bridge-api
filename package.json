@@ -1,45 +1,45 @@
 {
-	"name": "adminjs-example",
-	"version": "1.0.0",
-	"main": "index.js",
-	"type": "module",
-	"scripts": {
-		"dev": "nodemon api/index.js",
-		"bundle": "npx patch-package; node bundle.js",
-		"add": "git add .",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
-	"engines": {
-		"node": "20.x"
-	},
-	"devDependencies": {
-		"@types/express": "^4.17.21",
-		"nodemon": "^3.1.0",
-		"pre-commit": "^1.2.2"
-	},
-	"dependencies": {
-		"@adminjs/bundler": "^3.0.0",
-		"@adminjs/express": "^6.1.0",
-		"@adminjs/mongoose": "^4.1.0",
-		"adminjs": "^7.8.1",
-		"bcrypt": "^5.1.1",
-		"connect-mongo": "^5.1.0",
-		"cors": "^2.8.5",
-		"dotenv": "^16.4.5",
-		"express": "^4.19.2",
-		"express-formidable": "^1.2.0",
-		"express-session": "^1.18.0",
-		"mongodb": "^6.6.2",
-		"mongoose": "^8.4.0",
-		"patch-package": "^8.0.0",
-		"tslib": "^2.6.2",
-		"uuid": "^9.0.1"
-	},
-	"overrides": {
-		"rollup": "npm:@rollup/wasm-node"
-	},
-	"pre-commit": [
-		"bundle",
-		"add"
-	]
+  "name": "adminjs-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon api/index.js",
+    "bundle": "npx patch-package && node bundle.js",
+    "add": "git add .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "nodemon": "^3.1.0",
+    "pre-commit": "^1.2.2"
+  },
+  "dependencies": {
+    "@adminjs/bundler": "^3.0.0",
+    "@adminjs/express": "^6.1.0",
+    "@adminjs/mongoose": "^4.1.0",
+    "adminjs": "^7.8.1",
+    "bcrypt": "^5.1.1",
+    "connect-mongo": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.18.0",
+    "mongodb": "^6.6.2",
+    "mongoose": "^8.4.0",
+    "patch-package": "^8.0.0",
+    "tslib": "^2.6.2",
+    "uuid": "^9.0.1"
+  },
+  "overrides": {
+    "rollup": "npm:@rollup/wasm-node"
+  },
+  "pre-commit": [
+    "bundle",
+    "add"
+  ]
 }
