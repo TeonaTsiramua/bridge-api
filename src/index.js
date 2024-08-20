@@ -18,7 +18,9 @@ const admin = new AdminJS({
     ...options, assetsCDN: staticsURL, branding: {
         companyName: "Bridge",
         favicon: `${staticsURL}/logo.svg`
-    }
+    },
 });
+
+admin.watch();
 
 export default admin;

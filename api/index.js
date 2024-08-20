@@ -5,9 +5,12 @@ import MongoStore from 'connect-mongo';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import { connect } from 'mongoose';
+import pkg from 'mongoose';
+const { connect, connection } = pkg;
 import admin from '../src/index.js';
 import { productRouter } from '../src/product/product.router.js';
+import { imageRouter } from '../src/image/image.router.js';
+import { GridFSBucket } from 'mongodb';
 
 dotenv.config();
 
@@ -35,6 +38,7 @@ const createServer = async () => {
 
   try {
     await connect(CONNECTION_STRING);
+
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('MongoDB connection error:', error);
@@ -85,6 +89,7 @@ const createServer = async () => {
 
   app.use(express.static('./public'));
   productRouter(app);
+  imageRouter(app);
   app.use(admin.options.rootPath, adminRouter);
 
   return app;
