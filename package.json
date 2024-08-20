@@ -42,8 +42,5 @@
 	},
 	"overrides": {
 		"rollup": "npm:@rollup/wasm-node"
-	},
-	"pre-commit": [
-		"add"
-	]
+	}
 }
