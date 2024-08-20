@@ -1,7 +1,7 @@
 import { Database, Resource } from "@adminjs/mongoose";
 import AdminJS from "adminjs";
-import { options } from "./options.js";
 import dotenv from 'dotenv';
+import { options } from "./options.js";
 dotenv.config();
 
 let staticsURL;
@@ -20,7 +20,5 @@ const admin = new AdminJS({
         favicon: `${staticsURL}/logo.svg`
     },
 });
-
-admin.watch();
 
 export default admin;
