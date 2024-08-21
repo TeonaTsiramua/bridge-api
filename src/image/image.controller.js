@@ -1,7 +1,8 @@
 import { ObjectId } from "mongodb";
+import { deleteWithGridFS } from "../gridfs/deleteWithGridFS.js";
 import { downloadWithGridFS } from "../gridfs/downloadWithGridFS.js";
 import { uploadWithGridFS } from "../gridfs/uploadWithGridFS.js";
-import { deleteWithGridFS } from "../gridfs/deleteWithGridFS.js";
+import { Image } from "./image.entity.js";
 
 const create = async (req, res) => {
     const file = req?.file;
@@ -33,12 +34,17 @@ const read = async (req, res) => {
     try {
         if (!ObjectId.isValid(id)) return res.status(400).json({ error: 'Not valid id' });
 
+        const image = await Image.findOne({ bucketId: id }).lean();
+
+        if (!image) return res.status(404).json({ error: 'Image not found' });
+
         const bufferData = await downloadWithGridFS(new ObjectId(id));
 
         if (!bufferData?.length) return res.status(404).json({ message: "Image not found" });
 
         res.status(200).json({
             data: bufferData.toString("base64"),
+            contentType: image.contentType
         });
 
     } catch (error) {
@@ -64,4 +70,5 @@ const deleteWithId = async (req, res) => {
     }
 };
 
-export { create, read, deleteWithId };
+export { create, deleteWithId, read };
+

@@ -8,8 +8,6 @@ const ImageShow = ({ record, property }) => {
 		const getImage = async (id) => {
 			const data = await fetch(`/image/${id}`).then((res) => res.json());
 
-			console.log(data);
-
 			setImage({ ...data, data: `data:${data.contentType};base64,${data.data}` });
 		};
 		if (record.params?.bucketId) {
