@@ -5,12 +5,10 @@ import MongoStore from 'connect-mongo';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import pkg from 'mongoose';
-const { connect, connection } = pkg;
+import { connect } from 'mongoose';
+import { imageRouter } from '../src/image/image.router.js';
 import admin from '../src/index.js';
 import { productRouter } from '../src/product/product.router.js';
-import { imageRouter } from '../src/image/image.router.js';
-import { GridFSBucket } from 'mongodb';
 
 dotenv.config();
 
