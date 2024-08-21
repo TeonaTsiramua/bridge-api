@@ -1,4 +1,3 @@
-import { Buffer } from "buffer";
 import { GridFSBucket } from "mongodb";
 import { closeDatabaseConnection, connectToDatabase } from "./connect.js";
 

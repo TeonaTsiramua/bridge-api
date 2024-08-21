@@ -1,15 +1,20 @@
 import { GridFSBucket } from "mongodb";
 import { connectToDatabase, closeDatabaseConnection } from "./connect.js";
 import { Readable } from "stream";
+import { deleteWithGridFS } from "./deleteWithGridFS.js";
 
 const DB_NAME = "bridge-test-cluster";
 
 
-async function uploadWithGridFS(file, metadata) {
+async function uploadWithGridFS(file, metadata, id) {
     const client = await connectToDatabase();
     try {
         const db = client.db(DB_NAME);
         const bucket = new GridFSBucket(db, { bucketName: "images" });
+
+        if (id) {
+            await deleteWithGridFS(id);
+        }
 
         const uploadStream = bucket.openUploadStream(file.originalname, { metadata });
         const bufferStream = Readable.from(file.buffer);

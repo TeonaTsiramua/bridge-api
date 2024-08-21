@@ -1,7 +1,7 @@
-import { Box, Label } from "@adminjs/design-system";
+import { Box } from "@adminjs/design-system";
 import React, { useEffect, useState } from "react";
 
-const ImageShow = ({ record }) => {
+const ImageShow = ({ record, property }) => {
 	const [image, setImage] = useState({});
 
 	useEffect(() => {
@@ -12,10 +12,10 @@ const ImageShow = ({ record }) => {
 
 			setImage({ ...data, data: `data:${data.contentType};base64,${data.data}` });
 		};
-		if (record?.params?._id) {
-			getImage(record.params._id);
+		if (record.params?.bucketId) {
+			getImage(record.params.bucketId);
 		}
-	}, [record?.params?._id]);
+	}, [record, property.name]);
 	return (
 		<Box>
 			<img src={image?.data} alt="Image" style={{ maxWidth: 120 }} />

@@ -5,7 +5,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 const imageRouter = (app) => {
-    app.route("/image-upload").post(upload.single('image'), create);
+    app.route("/image-upload/:id").post(upload.single('image'), create);
     app.route("/image/:id").get(read);
 };
 

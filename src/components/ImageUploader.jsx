@@ -1,17 +1,22 @@
 import { Box, DropZone } from "@adminjs/design-system";
 import React, { useCallback } from "react";
 
-const ImageUploader = ({ onChange }) => {
+const ImageUploader = ({ onChange, record }) => {
 	const handleUpload = useCallback(
 		async (files) => {
 			onChange("name", "");
 			onChange("contentType", "");
-			onChange("bucketId", "");
 			const [file] = files;
 			const formData = new FormData();
 			formData.append("image", file);
 
-			const res = await fetch("/image-upload", {
+			let id = "";
+
+			if (record.params?.bucketId) {
+				id = record.params.bucketId;
+			}
+
+			const res = await fetch("/image-upload" + (id ? `/${id}` : "/010"), {
 				method: "POST",
 				body: formData,
 			}).then((res) => res.json());
