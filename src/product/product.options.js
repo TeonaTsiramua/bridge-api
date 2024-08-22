@@ -1,3 +1,4 @@
+import { Components } from "../components/ComponentLoader.js";
 import { Product } from "./product.entity.js";
 
 const ProductResource = {
@@ -10,9 +11,11 @@ const ProductResource = {
       _id: {
         isVisible: { list: false, show: true, edit: false, filter: true },
       },
-    },
-    description: {
-      type: "textarea",
+      description: {
+        components: {
+          edit: Components.Textarea,
+        },
+      },
     },
   },
 };
