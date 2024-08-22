@@ -21,6 +21,4 @@ const admin = new AdminJS({
     },
 });
 
-admin.watch()
-
 export default admin;
