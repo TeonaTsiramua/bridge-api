@@ -1,7 +1,6 @@
 import { CompanyResource } from "./company/company.options.js";
-import { ImageResource } from "./image/image.options.js";
-import { ProductResource } from "./product/product.options.js";
 import { componentLoader } from './components/ComponentLoader.js';
+import { ProductResource } from "./product/product.options.js";
 
 /**
  * @typedef {import("adminjs").AdminJSOptions} Options
@@ -14,7 +13,6 @@ const options = {
     resources: [
         CompanyResource,
         ProductResource,
-        ImageResource
     ],
     componentLoader
 };

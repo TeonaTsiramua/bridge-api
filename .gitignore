@@ -4,3 +4,5 @@ node_modules
 
 #files
 package-lock.json
+build.tar.gz
+.DS_Store
