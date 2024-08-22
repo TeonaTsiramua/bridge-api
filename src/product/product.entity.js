@@ -44,6 +44,7 @@ const productSchema = new Schema({
 
     enum: ['4X2', '4X4', '6X4', '6X6', '8X4', '8X6', '8X8', 'სხვა'],
   },
+  description: { type: String },
 });
 
 const Product = model('Product', productSchema);
