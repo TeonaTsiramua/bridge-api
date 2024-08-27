@@ -1,0 +1,13 @@
+services:
+  app:
+    image: bridge-node-app:${PACKAGE_VERSION}
+    volumes:
+      - ./:/home/bridge/
+    build:
+      context: .
+    container_name: bridge-node
+    user: "root"
+    ports:
+      - 5101:5101
+    env_file:
+      - ./.env
