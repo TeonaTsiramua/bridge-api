@@ -22,12 +22,19 @@ fi
 # Step 4: Copy the assets/images directory from the temp folder to the running container
 sudo docker cp $SOURCE_DIR/* $CONTAINER_ID:/home/bridge/assets/images
 
-sudo rm -rf ./temp
-
-# Step 5: Verify that the files were copied successfully
-if [ $? -eq 0 ]; then
+COPY_RESULT=$?
+if [ $COPY_RESULT -eq 0 ]; then
   echo "Files successfully copied to the container $CONTAINER_ID:/home/bridge/assets/images"
 else
   echo "Failed to copy files to the container."
+  echo "Temporary files will not be removed."
   exit 1
+fi
+
+# Step 5: Verify that the files were copied successfully
+if [ $COPY_RESULT -eq 0 ]; then
+  echo "Removing temporary files..."
+  sudo rm -rf ./temp
+else
+  echo "Temporary files will not be removed due to previous failure."
 fi
