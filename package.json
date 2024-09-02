@@ -6,6 +6,7 @@
         "build": "rm -rf ./dist && tsc && cp -R package*.json .dockerignore docker-compose.yml Dockerfile *Images.sh src/public dist/ && cp .env.prod dist/.env",
         "lint": "eslint \"src\"",
         "start": "dotenv -c '.env' -- node dist/app",
+        "dev": "npx tsx watch src/app.ts",
         "publish": "./build.sh",
         "backupImages": "./backupImages.sh",
         "restoreImages": "./backupImages.sh",
@@ -45,6 +46,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "prettier": "^3.1.0",
         "tslib": "^2.5.0",
+        "tsx": "^4.19.0",
         "typescript": "^5.0.4"
     },
     "name": "bridge"

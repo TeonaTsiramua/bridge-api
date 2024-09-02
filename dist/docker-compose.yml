@@ -1,8 +1,6 @@
 services:
   app:
     image: bridge-node-app:${PACKAGE_VERSION}
-    volumes:
-      - ./:/home/bridge/
     build:
       context: .
     container_name: bridge-node

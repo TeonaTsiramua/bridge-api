@@ -1,7 +1,10 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+
+dotenv.config();
 
 const DEFAULT_ADMIN = {
     email: 'admin@example.com',

@@ -1,5 +1,5 @@
 AdminJS.UserComponents = {}
-import TextArea from '../dist/components/TextArea'
+import TextArea from '../src/components/TextArea'
 AdminJS.UserComponents.TextArea = TextArea
 import UploadEditComponent from '../node_modules/@adminjs/upload/build/features/upload-file/components/UploadEditComponent'
 AdminJS.UserComponents.UploadEditComponent = UploadEditComponent
