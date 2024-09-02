@@ -9,7 +9,7 @@
         "dev": "npx tsx watch src/app.ts",
         "publish": "./build.sh",
         "backupImages": "./backupImages.sh",
-        "restoreImages": "./backupImages.sh",
+        "restoreImages": "./restoreImages.sh",
         "minor": "npm version minor && node update-env.js",
         "major": "npm version major && node update-env.js",
         "patch": "npm version patch && node update-env.js"
