@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
-import { STATICS_URL } from 'src/globalConstants.js';
+
+import { STATICS_URL } from '../globalConstants.js';
 
 import { Product } from './product.entity.js';
 
